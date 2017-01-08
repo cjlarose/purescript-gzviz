@@ -25,15 +25,15 @@ foreign import asUint8Array :: Buffer -> Uint8Array
 testBit :: Int -> Int -> Boolean
 testBit x i = x .&. (1 `shl` i) /= 0
 
-bitAt :: Uint8Array -> Int -> Boolean
-bitAt arr offset = testBit (floor (arr `unsafeIndex` (offset `div` 8))) (7 - offset `mod` 8)
+unsafeBitAt :: Uint8Array -> Int -> Boolean
+unsafeBitAt arr offset = testBit (floor (arr `unsafeIndex` (offset `div` 8))) (7 - offset `mod` 8)
 
 null :: BitStream -> Boolean
 null (BitStream { arr, offset }) = offset >= floor (byteLength arr) * 8
 
 uncons :: BitStream -> Maybe { head :: Boolean, tail :: BitStream }
 uncons bs@(BitStream { arr, offset }) | null bs = Nothing
-                                      | otherwise = Just { head: bitAt arr offset,
+                                      | otherwise = Just { head: unsafeBitAt arr offset,
                                                            tail: BitStream { arr: arr, offset: offset + 1 } }
 
 eof :: forall m. Monad m => ParserT BitStream m Unit
