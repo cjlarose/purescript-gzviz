@@ -26,7 +26,7 @@ testBit :: Int -> Int -> Boolean
 testBit x i = x .&. (1 `shl` i) /= 0
 
 unsafeBitAt :: Uint8Array -> Int -> Boolean
-unsafeBitAt arr offset = testBit (floor (arr `unsafeIndex` (offset `div` 8))) (7 - offset `mod` 8)
+unsafeBitAt arr offset = testBit (floor (arr `unsafeIndex` (offset `div` 8))) (offset `mod` 8)
 
 null :: BitStream -> Boolean
 null (BitStream { arr, offset }) = offset >= floor (byteLength arr) * 8
